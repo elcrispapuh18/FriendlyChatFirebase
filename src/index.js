@@ -47,33 +47,24 @@ import { getPerformance } from 'firebase/performance';
 
 import { getFirebaseConfig } from './firebase-config.js';
 
-// Signs-in Friendly Chat.
-async function signIn() {
-// Signs-in Friendly Chat.
 async function signIn() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new GoogleAuthProvider();
   await signInWithPopup(getAuth(), provider);
 }
-}
 
-// Signs-out of Friendly Chat.
-function signOutUser() {
-// Signs-out of Friendly Chat.
+
 function signOutUser() {
   // Sign out of Firebase.
   signOut(getAuth());
 }
-}
 
-// Initiate firebase auth
-function initFirebaseAuth() {
-// Initialize firebase auth
+
 function initFirebaseAuth() {
   // Listen to auth state changes.
   onAuthStateChanged(getAuth(), authStateObserver);
 }
-}
+
 
 // Returns the signed-in user's profile Pic URL.
 function getProfilePicUrl() {
@@ -89,11 +80,21 @@ function getUserName() {
 function isUserSignedIn() {
   return !!getAuth().currentUser;
 }
-// Saves a new message on the Cloud Firestore.
-async function saveMessage(messageText) {
-  // TODO 7: Push a new message to Cloud Firestore.
-}
 
+async function saveMessage(messageText) {
+  // Add a new message entry to the Firebase database.
+  try {
+    await addDoc(collection(getFirestore(), 'messages'), {
+      name: getUserName(),
+      text: messageText,
+      profilePicUrl: getProfilePicUrl(),
+      timestamp: serverTimestamp()
+    });
+  }
+  catch(error) {
+    console.error('Error writing new message to Firebase Database', error);
+  }
+}
 // Loads chat messages history and listens for upcoming ones.
 function loadMessages() {
   // TODO 8: Load and listen for new messages.
