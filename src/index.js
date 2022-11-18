@@ -186,10 +186,10 @@ function onMediaFileSelected(event) {
   event.preventDefault();
   var file = event.target.files[0];
 
-  // Clear the selection in the file picker input.
+  
   imageFormElement.reset();
 
-  // Check if the file is an image.
+  
   if (!file.type.match('image.*')) {
     var data = {
       message: 'You can only share images',
@@ -198,7 +198,7 @@ function onMediaFileSelected(event) {
     signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
     return;
   }
-  // Check if the user is signed-in
+  
   if (checkSignedInWithMessage()) {
     saveImageMessage(file);
   }
@@ -424,3 +424,4 @@ const firebaseAppConfig = getFirebaseConfig();
 initializeApp(firebaseAppConfig);
 initFirebaseAuth();
 loadMessages();
+getPerformance();
